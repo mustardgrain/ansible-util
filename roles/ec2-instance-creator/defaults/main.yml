@@ -1,0 +1,8 @@
+keypair: default
+security_group: default
+image: ami-864d84ee
+region: us-east-1
+instance_type: m3.large
+instance_count: 1
+instance_group_name: unset
+vpc_subnet_id: subnet-6d948b46
