@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-source $(dirname $0)/util.sh
-
 if [ $# -lt 1 ] ; then
   echo "Usage: $0 <instance group name>"
   exit 1
@@ -14,4 +12,11 @@ if [ "$AWS_ACCESS_KEY" = "" ] ; then
     exit 1
 fi
 
-ansible-playbook $PLAYBOOK_DIR/destroy-ec2-instances.yml --extra-vars "hosts=$hosts"
+if [ "$ANSIBLE_PRIVATE_KEY_FILE" = "" ] ; then
+    echo "ERROR: ANSIBLE_PRIVATE_KEY_FILE environment variable not set"
+    exit 1
+fi
+
+cd "`dirname $0`"/..
+
+ansible-playbook playbooks/destroy-ec2-instances.yml --extra-vars "hosts=$hosts"

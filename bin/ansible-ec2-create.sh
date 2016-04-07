@@ -14,7 +14,13 @@ if [ "$AWS_ACCESS_KEY" = "" ] ; then
     exit 1
 fi
 
+if [ "$ANSIBLE_PRIVATE_KEY_FILE" = "" ] ; then
+    echo "ERROR: ANSIBLE_PRIVATE_KEY_FILE environment variable not set"
+    exit 1
+fi
+
 cd "`dirname $0`"/..
 
-#ansible-playbook playbooks/launch-ec2-instances.yml --extra-vars "instance_count=$count instance_type=$size instance_group_name=$hosts"
-ansible-playbook playbooks/run-script.yml -vvvv --extra-vars "hosts=$hosts script_path=../scripts/docker-allow-ubuntu.sh"
+ansible-playbook playbooks/launch-ec2-instances.yml --extra-vars "instance_count=$count instance_type=$size instance_group_name=$hosts"
+ansible-playbook playbooks/run-script.yml --extra-vars "hosts=$hosts script_path=../scripts/docker-install.sh"
+ansible-playbook playbooks/run-script.yml --extra-vars "hosts=$hosts script_path=../scripts/docker-allow-ubuntu.sh"

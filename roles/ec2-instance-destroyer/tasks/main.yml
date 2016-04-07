@@ -1,0 +1,8 @@
+- name: Get EC2 instance information
+  action: ec2_facts
+
+- name: Destroy EC2 instances
+  local_action: ec2 state="absent" keypair="{{ keypair }}" instance_ids="{{ ansible_ec2_instance_id }}" wait=yes region="{{ region }}"
+
+- name: Destroy EC2 inventory files
+  local_action: shell rm {{ vars['inventory_dir'] }}/{{ hosts }}.*
